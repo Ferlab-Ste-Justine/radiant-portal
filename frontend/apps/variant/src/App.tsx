@@ -101,8 +101,13 @@ function App() {
         </ul>
       </aside>
 
-      <main className="flex-1 p-4 h-full">
+      <main className="flex-1 p-4 h-full space-y-6">
         <h1 className="text-2xl font-bold">Variant</h1>
+        <QueryBuilder
+          id=""
+          fetchQueryCount={async () => 0}
+          getResolvedQueryForCount={async () => 0}
+        />
         <Table
           columns={columns}
           defaultColumnSettings={defaultSettings}
