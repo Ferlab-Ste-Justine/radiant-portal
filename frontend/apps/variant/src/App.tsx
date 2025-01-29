@@ -7,7 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "components/base/ui/accordion";
-import QueryBuilder from "components/base/ui/query-builder/queryBuilder";
+import QueryBuilder from "components/feature/QueryBuilder/QueryBuilder";
 import { Table } from "components/base/ui/table/table";
 import {
   columns,
