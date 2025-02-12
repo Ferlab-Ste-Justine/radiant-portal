@@ -11,6 +11,7 @@ export default [
   route("auth/callback", "./routes/auth/callback.ts"),
   route("auth/logout", "./routes/auth/logout.ts"),
   ...prefix("api", [
+    route("occurrences/counts", "./api/occurrences-count.ts"),
     route("occurrences", "./api/occurrences.ts"),
     route("refresh-token", "./api/refresh-token.ts"),
   ]),
