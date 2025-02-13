@@ -101,7 +101,7 @@ function App() {
         </ul>
       </aside>
 
-      <main className="flex-1 p-4 space-y-6  h-fullw-full overflow-hidden">
+      <main className="flex-1 p-4 space-y-6 overflow-hidden">
         <h1 className="text-2xl font-bold">Variant</h1>
         <QueryBuilder
           id="variant"
