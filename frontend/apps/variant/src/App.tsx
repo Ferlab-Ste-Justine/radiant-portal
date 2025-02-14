@@ -18,6 +18,7 @@ import { IVariantEntity } from "@/variant_type";
 import useSWR from "swr";
 import { axiosClient } from "@/utils/axios";
 import { UsersIcon } from "lucide-react";
+import { Button } from "@/components/base/Buttons";
 
 type OccurrenceInput = {
   seqId: string;
@@ -104,6 +105,9 @@ function App() {
 
       <main className="flex-1 p-4 space-y-6 overflow-hidden">
         <h1 className="text-2xl font-bold">Variant</h1>
+        <Button variant="primary" className="hover:bg-green-500">
+          New Filter
+        </Button>
         <QueryBuilder
           id="variant"
           enableCombine
