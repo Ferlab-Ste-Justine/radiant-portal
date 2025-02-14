@@ -105,9 +105,6 @@ function App() {
 
       <main className="flex-1 p-4 space-y-6 overflow-hidden">
         <h1 className="text-2xl font-bold">Variant</h1>
-        <Button variant="primary" className="hover:bg-green-500">
-          New Filter
-        </Button>
         <QueryBuilder
           id="variant"
           enableCombine
