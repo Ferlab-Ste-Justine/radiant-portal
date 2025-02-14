@@ -17,6 +17,7 @@ import {
 import { IVariantEntity } from "@/variant_type";
 import useSWR from "swr";
 import { axiosClient } from "@/utils/axios";
+import { UsersIcon } from "lucide-react";
 
 type OccurrenceInput = {
   seqId: string;
@@ -105,6 +106,9 @@ function App() {
         <h1 className="text-2xl font-bold">Variant</h1>
         <QueryBuilder
           id="variant"
+          enableCombine
+          enableShowHideLabels
+          queryCountIcon={UsersIcon}
           initialState={{
             activeQueryId: "1",
             queries: [
