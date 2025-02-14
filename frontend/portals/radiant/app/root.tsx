@@ -6,8 +6,6 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-import { MainNav } from "components/feature/main_navigation";
-
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
 import "@styles/colors.css";
