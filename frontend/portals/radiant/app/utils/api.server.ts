@@ -20,3 +20,4 @@ export const getApiConfig = async (
 export const getOccurrencesApi = async (
   request: Request
 ): Promise<OccurrencesApi> => new OccurrencesApi(await getApiConfig(request));
+

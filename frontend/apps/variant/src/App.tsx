@@ -1,19 +1,15 @@
 import "./App.css";
 import styles from "./App.module.css";
 import { ListBody, Occurrence, SortBodyOrderEnum, SqonOpEnum } from "@/api/api";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "components/base/ui/accordion";
 import { Table } from "components/base/ui/table/table";
-import { MultiSelect } from "@/components/feature/QueryFilters/MultiSelect";
+import SidenavFilters from './components/Sidenav/Filters';
+
 import {
   columns,
   userSettings,
   defaultSettings,
 } from "./include_variant_table";
+
 import { IVariantEntity } from "@/variant_type";
 import useSWR from "swr";
 import { axiosClient } from "@/utils/axios";
@@ -56,51 +52,7 @@ function App() {
 
   return (
     <div className={styles.appLayout}>
-      <aside>
-        <ul>
-          <li>
-            <Accordion type="single" collapsible>
-              <AccordionItem value="item-1">
-                <AccordionTrigger>MultiSelect</AccordionTrigger>
-                <AccordionContent>
-                  <MultiSelect />
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </li>
-          <li>
-            <Accordion type="single" collapsible>
-              <AccordionItem value="item-1">
-                <AccordionTrigger>Aggregation 2</AccordionTrigger>
-                <AccordionContent>
-                  <input
-                    type="checkbox"
-                    id="aggre1"
-                    name="aggre1"
-                    value="Aggre1"
-                  />
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </li>
-          <li>
-            <Accordion type="single" collapsible>
-              <AccordionItem value="item-1">
-                <AccordionTrigger>Aggregation 3</AccordionTrigger>
-                <AccordionContent>
-                  <input
-                    type="checkbox"
-                    id="aggre1"
-                    name="aggre1"
-                    value="Aggre1"
-                  />
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </li>
-        </ul>
-      </aside>
-
+      <SidenavFilters />
       <main className="flex-1 p-4 h-full">
         <h1 className="text-2xl font-bold">Variant</h1>
         <Table
