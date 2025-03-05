@@ -160,6 +160,43 @@ const FormMessage = React.forwardRef<
 });
 FormMessage.displayName = "FormMessage";
 
+const FormItemControl = ({
+  name,
+  label,
+  description,
+  colon = true,
+  children,
+}: React.PropsWithChildren<{
+  name: string;
+  label?: React.ReactNode;
+  description?: React.ReactNode;
+  colon?: boolean;
+}>) => {
+  const { control } = useFormContext();
+
+  return (
+    <FormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <FormItem>
+          {label && (
+            <FormLabel>
+              {label}
+              {colon ? " :" : ""}
+            </FormLabel>
+          )}
+          <FormControl>
+            {React.cloneElement(<></>, field, children)}
+          </FormControl>
+          {description && <FormDescription>{description}</FormDescription>}
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+};
+
 export {
   useFormField,
   Form,
@@ -169,4 +206,5 @@ export {
   FormDescription,
   FormMessage,
   FormField,
+  FormItemControl,
 };

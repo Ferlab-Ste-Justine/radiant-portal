@@ -10,13 +10,12 @@ import {
   Sqon,
 } from "@/api/api";
 import DataTable from "@/components/base/data-table/data-table";
-import { PaginationState, SortingState } from "@tanstack/react-table";
+import { PaginationState } from "@tanstack/react-table";
 import {
   columns,
   defaultSettings,
   userSettings,
 } from "./include_variant_table";
-import { IVariantEntity } from "@/variant_type";
 import useSWR from "swr";
 import { occurrencesApi } from "@/utils/api";
 import QueryBuilder from "@/components/feature/query-builder/query-builder";
@@ -25,6 +24,7 @@ import { useEffect, useState } from "react";
 import { QueryBuilderState } from "@/components/model/query-builder-core";
 import { queryBuilderRemote } from "@/components/model/query-builder-core/query-builder-remote";
 import SidenavFilters from "./components/layouts/SidenavFilters";
+import InterpretationDialogBtn from "./components/interpretation/interpretation-dialog-btn";
 
 type OccurrencesListInput = {
   seqId: string;
@@ -92,7 +92,7 @@ function App() {
     {
       seqId: SEQ_ID,
       listBody: {
-        selected_fields: ["hgvsg", "variant_class"],
+        selected_fields: ["hgvsg", "variant_class", "locus_id", "seq_id"],
         limit: pagination.pageSize,
         offset: pagination.pageIndex,
         sort: sorting,
@@ -151,11 +151,14 @@ function App() {
           pagination={pagination}
           onPaginationChange={setPagination}
           onServerSortingChange={setSorting}
-          subComponent={(data: IVariantEntity) => {
+          subComponent={(data) => {
             return (
-              <pre style={{ fontSize: "10px" }}>
-                <code>{JSON.stringify(data, null, 2)}</code>
-              </pre>
+              <>
+                <InterpretationDialogBtn />
+                <pre style={{ fontSize: "10px" }}>
+                  <code>{JSON.stringify(data, null, 2)}</code>
+                </pre>
+              </>
             );
           }}
           total={total?.count ?? 0}
