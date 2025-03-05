@@ -324,7 +324,6 @@ function MultiSelector({
           {selected.map((option) => {
             return (
               <Badge
-                size="xs"
                 key={option.value}
                 variant="default"
                 className={cn(
@@ -393,24 +392,23 @@ function MultiSelector({
               inputProps?.className
             )}
           />
-          <button
-            type="button"
-            onClick={() => {
-              setSelected(selected.filter((s) => s.fixed));
-              onChange?.(selected.filter((s) => s.fixed).map((o) => o.value));
-            }}
-            className={cn(
-              "absolute right-0 h-[26px] p-0",
-              (hideClearAllButton ||
-                disabled ||
-                selected.length < 1 ||
-                selected.filter((s) => s.fixed).length === selected.length) &&
-                "hidden"
-            )}
-          >
-            <XIcon size={18} className="" />
-          </button>
         </div>
+        <button
+          type="button"
+          onClick={() => {
+            setSelected(selected.filter((s) => s.fixed));
+            onChange?.(selected.filter((s) => s.fixed).map((o) => o.value));
+          }}
+          className={cn(
+            (hideClearAllButton ||
+              disabled ||
+              selected.length < 1 ||
+              selected.filter((s) => s.fixed).length === selected.length) &&
+              "hidden"
+          )}
+        >
+          <XIcon size={18} className="" />
+        </button>
       </div>
       <div className="relative">
         {open && (

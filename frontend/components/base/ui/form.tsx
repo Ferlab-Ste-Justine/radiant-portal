@@ -4,6 +4,7 @@ import { Slot } from "@radix-ui/react-slot";
 import {
   Controller,
   ControllerProps,
+  ControllerRenderProps,
   FieldPath,
   FieldValues,
   FormProvider,
@@ -86,12 +87,16 @@ FormItem.displayName = "FormItem";
 
 const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(({ className, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & {
+    colon?: boolean;
+  }
+>(({ className, colon = true, children, ...props }, ref) => {
   const { formItemId } = useFormField();
 
   return (
-    <Label ref={ref} className={className} htmlFor={formItemId} {...props} />
+    <Label ref={ref} className={className} htmlFor={formItemId} {...props}>
+      {children} {colon ? ":" : ""}
+    </Label>
   );
 });
 FormLabel.displayName = "FormLabel";

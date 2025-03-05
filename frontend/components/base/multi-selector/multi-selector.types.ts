@@ -16,7 +16,9 @@ export interface MultiSelectorGroupOption {
 }
 
 export interface MultipleSelectorProps {
-  ref?: React.RefObject<MultipleSelectorRef>;
+  ref?:
+    | React.RefCallback<MultipleSelectorRef>
+    | React.RefObject<MultipleSelectorRef>;
   value?: string[];
   defaultOptions?: MultiSelectorOption[];
   /** manually controlled options */

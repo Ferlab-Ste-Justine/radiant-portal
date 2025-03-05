@@ -16,7 +16,6 @@ import {
   defaultSettings,
   userSettings,
 } from "./include_variant_table";
-import { IVariantEntity } from "@/variant_type";
 import useSWR from "swr";
 import { occurrencesApi } from "@/utils/api";
 import QueryBuilder from "@/components/feature/query-builder/query-builder";
@@ -25,6 +24,8 @@ import { useEffect, useState } from "react";
 import { QueryBuilderState } from "@/components/model/query-builder-core";
 import { queryBuilderRemote } from "@/components/model/query-builder-core/query-builder-remote";
 import SidenavFilters from "./components/layouts/SidenavFilters";
+import InterpretationDialogBtn from "./components/interpretation/interpretation-dialog-btn";
+import { TooltipProvider } from "@/components/base/ui/tooltip";
 
 type OccurrencesListInput = {
   seqId: string;
@@ -92,7 +93,7 @@ function App() {
     {
       seqId: SEQ_ID,
       listBody: {
-        selected_fields: ["hgvsg", "variant_class"],
+        selected_fields: ["hgvsg", "variant_class", "locus_id", "seq_id"],
         limit: pagination.pageSize,
         offset: pagination.pageIndex,
         sort: sorting,
@@ -119,49 +120,54 @@ function App() {
   }, []);
 
   return (
-    <div className={styles.appLayout}>
-      <SidenavFilters />
-      <main className="flex-1 p-4 h-full">
-        <h1 className="text-2xl font-bold">Variant</h1>
-        <div className="py-4 space-y-2">
-          <QueryBuilder
-            id="variant"
-            state={qbState}
-            enableCombine
-            enableFavorite
-            enableShowHideLabels
-            queryCountIcon={<UsersIcon size={14} />}
-            fetchQueryCount={() => Promise.resolve(15)}
-            onActiveQueryChange={(sqon) => setActiveSqon(sqon as Sqon)}
-            onStateChange={(state) => {
-              setQbState(state);
+    <TooltipProvider delayDuration={0}>
+      <div className={styles.appLayout}>
+        <SidenavFilters />
+        <main className="flex-1 p-4 h-full">
+          <h1 className="text-2xl font-bold">Variant</h1>
+          <div className="py-4 space-y-2">
+            <QueryBuilder
+              id="variant"
+              state={qbState}
+              enableCombine
+              enableFavorite
+              enableShowHideLabels
+              queryCountIcon={<UsersIcon size={14} />}
+              fetchQueryCount={() => Promise.resolve(15)}
+              onActiveQueryChange={(sqon) => setActiveSqon(sqon as Sqon)}
+              onStateChange={(state) => {
+                setQbState(state);
+              }}
+            />
+          </div>
+          <DataTable
+            columns={columns}
+            columnSettings={userSettings}
+            data={list ?? []}
+            defaultColumnSettings={defaultSettings}
+            defaultServerSorting={DEFAULT_SORTING}
+            loadingStates={{
+              total: totalIsLoading,
+              list: listIsLoading,
             }}
+            pagination={pagination}
+            onPaginationChange={setPagination}
+            onServerSortingChange={setSorting}
+            subComponent={(data) => {
+              return (
+                <>
+                  <InterpretationDialogBtn />
+                  <pre style={{ fontSize: "10px" }}>
+                    <code>{JSON.stringify(data, null, 2)}</code>
+                  </pre>
+                </>
+              );
+            }}
+            total={total?.count ?? 0}
           />
-        </div>
-        <DataTable
-          columns={columns}
-          columnSettings={userSettings}
-          data={list ?? []}
-          defaultColumnSettings={defaultSettings}
-          defaultServerSorting={DEFAULT_SORTING}
-          loadingStates={{
-            total: totalIsLoading,
-            list: listIsLoading,
-          }}
-          pagination={pagination}
-          onPaginationChange={setPagination}
-          onServerSortingChange={setSorting}
-          subComponent={(data: IVariantEntity) => {
-            return (
-              <pre style={{ fontSize: "10px" }}>
-                <code>{JSON.stringify(data, null, 2)}</code>
-              </pre>
-            );
-          }}
-          total={total?.count ?? 0}
-        />
-      </main>
-    </div>
+        </main>
+      </div>
+    </TooltipProvider>
   );
 }
 
