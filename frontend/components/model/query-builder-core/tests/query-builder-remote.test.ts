@@ -194,7 +194,7 @@ describe("SavedFilters Manipulation", () => {
     };
 
     expect(() => queryBuilderRemote.updateQuery(qbId, queryToUpdate)).toThrow(
-      Error
+      Error,
     );
   });
 

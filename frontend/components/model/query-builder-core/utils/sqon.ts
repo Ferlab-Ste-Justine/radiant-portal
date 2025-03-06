@@ -83,7 +83,7 @@ export const isBooleanOperator = (
   typeof sqon === "object" &&
   isNotEmptySqon(sqon) &&
   "op" in sqon &&
-  sqon.op in BooleanOperators;
+  Object.values(BooleanOperators).includes(sqon.op as BooleanOperators);
 
 /**
  * Check if a synthetic sqon is a field operator
