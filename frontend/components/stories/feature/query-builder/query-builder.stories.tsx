@@ -10,17 +10,13 @@ import {
 import { Button } from "@/components/base/ui/button";
 import { queryBuilderRemote } from "@/components/model/query-builder-core/query-builder-remote";
 import { v4 } from "uuid";
-import {
-  BooleanOperators,
-  FieldOperators,
-  ISyntheticSqon,
-} from "@/components/model/sqon";
+import { BooleanOperators, ISyntheticSqon } from "@/components/model/sqon";
 import { AlertDialogProvider } from "@/components/base/dialog/alert-dialog-provider";
 import {
   ISavedFilter,
   IUserSavedFilter,
 } from "@/components/model/saved-filter";
-import { Spinner } from "@/components/base/spinner";
+import { SqonOpEnum } from "@/api/api";
 
 const meta = {
   title: "Feature/Query Builder",
@@ -58,16 +54,16 @@ const randomNumber = (min = 1, max = 100): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 const randomString = () => Math.random().toString(36).substring(7);
 
-const numericOperators: FieldOperators[] = [
-  FieldOperators[">"],
-  FieldOperators["<"],
-  FieldOperators.between,
-  FieldOperators[">="],
-  FieldOperators["<="],
+const numericOperators: SqonOpEnum[] = [
+  SqonOpEnum.GreaterThan,
+  SqonOpEnum.LessThan,
+  SqonOpEnum.Between,
+  SqonOpEnum.GreaterThanOrEqualTo,
+  SqonOpEnum.LessThanOrEqualTo,
 ];
 
 const generateRandomUserSavedFilter = (
-  filter?: ISavedFilter
+  filter?: ISavedFilter,
 ): IUserSavedFilter => ({
   id: v4(),
   title: filter?.title || `Custom Pill ${randomNumber(1, 50)}`,
@@ -79,7 +75,7 @@ const generateRandomUserSavedFilter = (
   favorite: false,
 });
 
-const generateRandomValue = (operator: FieldOperators): (string | number)[] => {
+const generateRandomValue = (operator: SqonOpEnum): (string | number)[] => {
   if (numericOperators.includes(operator)) {
     return Array.from({ length: 2 }, () => randomNumber());
   } else {
@@ -90,7 +86,7 @@ const generateRandomValue = (operator: FieldOperators): (string | number)[] => {
 const generateRandomQuery = (id: string = v4()): ISyntheticSqon => {
   const numConditions = randomNumber(1, 3);
   const conditions = Array.from({ length: numConditions }, () => {
-    const op = randomElement(Object.values(FieldOperators));
+    const op = randomElement(Object.values(SqonOpEnum));
     return {
       op,
       content: {
@@ -234,14 +230,14 @@ export const CustomPill: Story = {
       action("onCustomPillSave")(filter);
 
       return new Promise((resolve) =>
-        setTimeout(() => resolve(generateRandomUserSavedFilter(filter)), 750)
+        setTimeout(() => resolve(generateRandomUserSavedFilter(filter)), 750),
       );
     },
     onCustomPillUpdate: (filter) => {
       action("onCustomPillUpdate")(filter);
 
       return new Promise((resolve) =>
-        setTimeout(() => resolve(generateRandomUserSavedFilter(filter)), 750)
+        setTimeout(() => resolve(generateRandomUserSavedFilter(filter)), 750),
       );
     },
     onSavedFilterCreate: fn(),
@@ -253,7 +249,7 @@ export const CustomPill: Story = {
       queryBuilderEditId: "qb-custom-pill-edit-id",
       fetchCustomPillById: () =>
         new Promise((resolve) =>
-          setTimeout(() => resolve(generateRandomUserSavedFilter()), 750)
+          setTimeout(() => resolve(generateRandomUserSavedFilter()), 750),
         ),
       validateCustomPillTitle: () =>
         new Promise((resolve) => setTimeout(() => resolve(true), 750)),
@@ -265,8 +261,8 @@ export const CustomPill: Story = {
                 generateRandomUserSavedFilter(),
                 generateRandomUserSavedFilter(),
               ]),
-            750
-          )
+            750,
+          ),
         ),
     },
   },

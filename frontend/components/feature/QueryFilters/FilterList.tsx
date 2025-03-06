@@ -3,7 +3,12 @@ import { MultiSelect } from "@/components/feature/QueryFilters/MultiSelect";
 import useSWR from "swr";
 import React from "react";
 
-import { type Aggregation, SqonOpEnum, type AggregationBody } from "@/api/api";
+import {
+  SqonContent,
+  SqonOpEnum,
+  type Aggregation,
+  type AggregationBody,
+} from "@/api/api";
 import {
   Accordion,
   AccordionContent,
@@ -13,6 +18,8 @@ import {
 import { occurrencesApi } from "@/utils/api";
 import { SearchIcon } from "lucide-react";
 import { type Aggregation as AggregationConfig } from "@/components/model/applications-config";
+import { queryBuilderRemote } from "@/components/model/query-builder-core/query-builder-remote";
+// import { ISqonGroupFilter } from "@/components/model/sqon";
 
 type OccurrenceAggregationInput = {
   seqId: string;
@@ -28,29 +35,38 @@ const fetcher = (input: OccurrenceAggregationInput): Promise<Aggregation[]> => {
 function useAggregationBuilder(
   field: string,
   size: number = 30,
-  shouldFetch: boolean = false
+  shouldFetch: boolean = false,
 ) {
+  let data: OccurrenceAggregationInput | null;
+
+  if (!shouldFetch) {
+    data = null;
+  } else {
+    data = {
+      seqId: "5011",
+      aggregationBody: {
+        field: field,
+        size: size,
+      },
+    };
+  }
+  const activeQuery = queryBuilderRemote.getActiveQuery("variant");
+
+  if (activeQuery && data) {
+    data.aggregationBody.sqon = {
+      content: activeQuery.content as SqonContent,
+      op: activeQuery.op as SqonOpEnum,
+    };
+  }
+
+  console.log("useswr data: ", data);
+
   return useSWR<Aggregation[], any, OccurrenceAggregationInput | null>(
-    shouldFetch
-      ? {
-          seqId: "5011",
-          aggregationBody: {
-            field: field,
-            size: size,
-            sqon: {
-              content: {
-                field: "impact_score",
-                value: [4],
-              },
-              op: SqonOpEnum.In,
-            },
-          },
-        }
-      : null,
+    data,
     fetcher,
     {
       revalidateOnFocus: false,
-    }
+    },
   );
 }
 
@@ -75,7 +91,7 @@ function FilterBuilder({ field }: { field: AggregationConfig }) {
       <AccordionItem value="item-1">
         <AccordionTrigger className="AccordionTrigger">
           <div className="flex items-center justify-between w-full">
-            <span className="capitalize">{field.key.replace('_', ' ')}</span>
+            <span className="capitalize">{field.key.replace("_", " ")}</span>
             {!collapsed && (
               <SearchIcon
                 size={18}
@@ -89,16 +105,21 @@ function FilterBuilder({ field }: { field: AggregationConfig }) {
         <AccordionContent>
           {!data ? (
             <div>Loading...</div>
+          ) : field.type === "multiple" ? (
+            <MultiSelect
+              field={field}
+              searchVisible={searchVisible}
+              data={data}
+            />
           ) : (
-            field.type === 'multiple' 
-              ? <MultiSelect searchVisible={searchVisible} data={data} />
-              : <div>Not implemented</div>
+            <div>Not implemented</div>
           )}
         </AccordionContent>
       </AccordionItem>
     </Accordion>
   );
 }
+
 export function FilterList({ fields }: { fields: AggregationConfig[] }) {
   return (
     <ul>
