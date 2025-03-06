@@ -14,7 +14,7 @@ import { useQueryBuilderDictContext } from "../query-builder-context";
 function QueryCombiner() {
   const { query } = useQueryBarContext();
   const dict = useQueryBuilderDictContext();
-  const isAndOperator = query.raw().op === BooleanOperators.and;
+  const isAndOperator = query.raw().op === BooleanOperators.And;
 
   return (
     <TooltipProvider>
@@ -26,7 +26,7 @@ function QueryCombiner() {
               className="text-sm p-0 h-auto font-normal"
               onClick={() =>
                 query.changeCombineOperator(
-                  isAndOperator ? BooleanOperators.or : BooleanOperators.and
+                  isAndOperator ? BooleanOperators.Or : BooleanOperators.And,
                 )
               }
             >

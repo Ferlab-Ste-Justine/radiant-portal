@@ -110,9 +110,11 @@ function App() {
     setActiveSqon(queryBuilderRemote.getActiveQuery("variant") as Sqon);
   }, []);
 
+  console.log('qbState', qbState);
+
   return (
     <div className={styles.appLayout}>
-      <SidenavFilters />
+      <SidenavFilters state={qbState} />
       <main className="flex-1 p-4 h-full">
         <h1 className="text-2xl font-bold">Variant</h1>
         <div className="py-4 space-y-2">

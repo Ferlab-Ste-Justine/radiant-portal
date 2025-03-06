@@ -4,9 +4,13 @@ import { Checkbox } from "@/components/base/ui/checkbox";
 import { Input } from "@/components/base/ui/input";
 import { ActionButton } from "@/components/base/Buttons";
 import { Aggregation } from "@/api/api";
+import { queryBuilderRemote } from "@/components/model/query-builder-core/query-builder-remote";
+import { MERGE_VALUES_STRATEGIES } from "@/components/model/sqon";
+import { type Aggregation as AggregationConfig } from "@/components/model/applications-config";
 
 interface IProps {
   data: Aggregation[];
+  field: AggregationConfig;
   appliedItems?: string[];
   maxVisibleItems?: number;
   searchVisible?: boolean;
@@ -18,6 +22,7 @@ function searchOptions(search: string, data: any[]) {
 
 export function MultiSelect({
   data,
+  field,
   maxVisibleItems = 10,
   searchVisible = false,
   appliedItems = [],
@@ -29,7 +34,7 @@ export function MultiSelect({
   // items that are currently checked
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [visibleItemsCount, setVisibleItemsCount] = useState(
-    maxVisibleItems < items.length ? maxVisibleItems : items.length
+    maxVisibleItems < items.length ? maxVisibleItems : items.length,
   );
   const [hasUnappliedItems, setHasUnappliedItems] = useState(false);
 
@@ -45,7 +50,7 @@ export function MultiSelect({
       }
       setItems(results);
     },
-    [visibleItemsCount, data]
+    [visibleItemsCount, data],
   );
 
   const showMore = useCallback(() => {
@@ -81,7 +86,7 @@ export function MultiSelect({
       setHasUnappliedItems(true);
       setSelectedItems(newList);
     },
-    [selectedItems]
+    [selectedItems],
   );
 
   const reset = useCallback(() => {
@@ -92,6 +97,17 @@ export function MultiSelect({
   const apply = useCallback(() => {
     setHasUnappliedItems(false);
     setAppliedSelectedItems(selectedItems);
+    queryBuilderRemote.updateActiveQueryField("variant", {
+      field: field.key,
+      value: [...selectedItems],
+      merge_strategy: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES, // Default APPEND_VALUES
+    });
+    const activeQuery = queryBuilderRemote.getActiveQuery("variant");
+    const sqon = activeQuery;
+    console.group("MultiSelect");
+    console.log("active query: ", queryBuilderRemote.getActiveQuery("variant"));
+    console.log("sqon: ", sqon);
+    console.groupEnd();
   }, [selectedItems]);
 
   return items.length === 0 ? (
@@ -136,7 +152,7 @@ export function MultiSelect({
               <div className="">{items[i].key}</div>
               <span className="checkmark"></span>
             </label>
-            <span className="bg-gray-200 px-3 py-1 rounded-md">
+            <span className="bg-gray-200 px-2 py-1 rounded-md font-mono text-xs">
               {items[i].count}
             </span>
           </div>
