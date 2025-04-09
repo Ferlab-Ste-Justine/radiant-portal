@@ -33,14 +33,12 @@ function ManeCell({ canonical, mane_select, mane_plus }: ManeCellProps) {
       {pills
         .filter(({ condition }) => condition)
         .map(({ label, tooltip }, index) => (
-          <TooltipProvider key={index}>
-            <Tooltip>
-              <TooltipTrigger>
-                <ManePill>{label}</ManePill>
-              </TooltipTrigger>
-              <TooltipContent>{tooltip}</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip key={index}>
+            <TooltipTrigger>
+              <ManePill>{label}</ManePill>
+            </TooltipTrigger>
+            <TooltipContent>{tooltip}</TooltipContent>
+          </Tooltip>
         ))}
     </>
   );
