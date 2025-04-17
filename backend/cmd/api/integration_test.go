@@ -208,7 +208,7 @@ func Test_GetInterpretationGermline(t *testing.T) {
 		pubmedService := &MockExternalClient{}
 		repo := repository.NewPostgresRepository(db, pubmedService)
 		// not found
-		assertGetInterpretationGermline(t, repo.Interpretations, "seq1", "locus1", "trans1", http.StatusNotFound, `{"error":"not found"}`)
+		assertGetInterpretationGermline(t, repo.Interpretations, "seq1", "locus1", "trans1", http.StatusNotFound, `{"status": 404, "message":"interpretation not found"}`)
 		// create
 		interpretation := &types.InterpretationGermline{}
 		actual := assertPostInterpretationGermline(t, repo.Interpretations, "seq1", "locus1", "trans1", http.StatusOK, interpretation, "")
@@ -221,7 +221,7 @@ func Test_GetInterpretationGermline(t *testing.T) {
 		assert.Equal(t, actual.Metadata.AnalysisId, "analysis1")
 		// Update with unknown pubmed
 		interpretation.Pubmed = append(interpretation.Pubmed, types.InterpretationPubmed{CitationID: "2"})
-		assertPostInterpretationGermline(t, repo.Interpretations, "seq1", "locus1", "trans1", http.StatusBadRequest, interpretation, `{"error":"pubmed citation not found: 2"}`)
+		assertPostInterpretationGermline(t, repo.Interpretations, "seq1", "locus1", "trans1", http.StatusBadRequest, interpretation, `{"status": 400, "message":"pubmed citation not found: 2"}`)
 		// Update with known pubmed
 		interpretation.Pubmed[0].CitationID = "1"
 		actual = assertPostInterpretationGermline(t, repo.Interpretations, "seq1", "locus1", "trans1", http.StatusOK, interpretation, "")
@@ -267,7 +267,7 @@ func Test_GetInterpretationsomatic(t *testing.T) {
 		pubmedService := &MockExternalClient{}
 		repo := repository.NewPostgresRepository(db, pubmedService)
 		// not found
-		assertGetInterpretationSomatic(t, repo.Interpretations, "seq1", "locus1", "trans1", http.StatusNotFound, `{"error":"not found"}`)
+		assertGetInterpretationSomatic(t, repo.Interpretations, "seq1", "locus1", "trans1", http.StatusNotFound, `{"status": 404, "message":"interpretation not found"}`)
 		// create
 		interpretation := &types.InterpretationSomatic{}
 		actual := assertPostInterpretationSomatic(t, repo.Interpretations, "seq1", "locus1", "trans1", http.StatusOK, interpretation, "")
@@ -280,7 +280,7 @@ func Test_GetInterpretationsomatic(t *testing.T) {
 		assert.Equal(t, actual.Metadata.AnalysisId, "analysis1")
 		// Update with unknown pubmed
 		interpretation.Pubmed = append(interpretation.Pubmed, types.InterpretationPubmed{CitationID: "2"})
-		assertPostInterpretationSomatic(t, repo.Interpretations, "seq1", "locus1", "trans1", http.StatusBadRequest, interpretation, `{"error":"pubmed citation not found: 2"}`)
+		assertPostInterpretationSomatic(t, repo.Interpretations, "seq1", "locus1", "trans1", http.StatusBadRequest, interpretation, `{"status": 400, "message":"pubmed citation not found: 2"}`)
 		// Update with known pubmed
 		interpretation.Pubmed[0].CitationID = "1"
 		actual = assertPostInterpretationSomatic(t, repo.Interpretations, "seq1", "locus1", "trans1", http.StatusOK, interpretation, "")
@@ -338,7 +338,7 @@ func Test_GetUserSet(t *testing.T) {
 		pubmedService := &MockExternalClient{}
 		repo := repository.NewPostgresRepository(db, pubmedService)
 		// not found
-		assertGetUserSet(t, repo.UserSets, "bce3b031-c691-4680-878f-f43d661f9a9f", http.StatusNotFound, `{"error":"not found"}`)
+		assertGetUserSet(t, repo.UserSets, "bce3b031-c691-4680-878f-f43d661f9a9f", http.StatusNotFound, `{"status": 404, "message":"user not found"}`)
 	})
 }
 

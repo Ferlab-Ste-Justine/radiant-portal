@@ -19,6 +19,18 @@ components:
         sqon:
           $ref: '#/components/schemas/Sqon'
       type: object
+    ApiError:
+      description: ApiError represents an error
+      properties:
+        detail: {}
+        message:
+          type: string
+        status:
+          type: integer
+      required:
+      - message
+      - status
+      type: object
     AutoCompleteTerm:
       properties:
         highlight:
@@ -475,9 +487,7 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties:
-                  type: string
-                type: object
+                $ref: '#/components/schemas/ApiError'
           description: Internal Server Error
       security:
       - bearerauth: []
@@ -489,14 +499,12 @@ paths:
       description: Search interpretation germline
       operationId: SearchInterpretationGermline
       responses:
-        "200":
+        "500":
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/InterpretationGermline'
-                type: array
-          description: OK
+                $ref: '#/components/schemas/ApiError'
+          description: Internal Server Error
       security:
       - bearerauth: []
       summary: Search interpretation germline
@@ -536,9 +544,13 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties:
-                  type: string
-                type: object
+                $ref: '#/components/schemas/ApiError'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
           description: Not Found
       security:
       - bearerauth: []
@@ -585,9 +597,13 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties:
-                  type: string
-                type: object
+                $ref: '#/components/schemas/ApiError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
           description: Bad Request
       security:
       - bearerauth: []
@@ -616,9 +632,13 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties:
-                  type: string
-                type: object
+                $ref: '#/components/schemas/ApiError'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
           description: Not Found
       security:
       - bearerauth: []
@@ -638,6 +658,12 @@ paths:
                   $ref: '#/components/schemas/InterpretationSomatic'
                 type: array
           description: OK
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          description: Internal Server Error
       security:
       - bearerauth: []
       summary: Search interpretation somatic
@@ -677,9 +703,13 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties:
-                  type: string
-                type: object
+                $ref: '#/components/schemas/ApiError'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
           description: Not Found
       security:
       - bearerauth: []
@@ -726,9 +756,13 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties:
-                  type: string
-                type: object
+                $ref: '#/components/schemas/ApiError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
           description: Bad Request
       security:
       - bearerauth: []
@@ -765,9 +799,7 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties:
-                  type: string
-                type: object
+                $ref: '#/components/schemas/ApiError'
           description: Internal Server Error
       security:
       - bearerauth: []
@@ -798,14 +830,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ExpendedOccurrence'
           description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          description: Not Found
         "500":
           content:
             application/json:
               schema:
-                additionalProperties:
-                  type: string
-                type: object
-          description: Internal Server Error
+                $ref: '#/components/schemas/ApiError'
+          description: Not Found
       security:
       - bearerauth: []
       summary: Get a ExpendedOccurrence
@@ -842,9 +878,19 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties:
-                  type: string
-                type: object
+                $ref: '#/components/schemas/ApiError'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
           description: Bad Request
       security:
       - bearerauth: []
@@ -880,9 +926,19 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties:
-                  type: string
-                type: object
+                $ref: '#/components/schemas/ApiError'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
           description: Bad Request
       security:
       - bearerauth: []
@@ -920,9 +976,19 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties:
-                  type: string
-                type: object
+                $ref: '#/components/schemas/ApiError'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
           description: Bad Request
       security:
       - bearerauth: []
@@ -958,9 +1024,19 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties:
-                  type: string
-                type: object
+                $ref: '#/components/schemas/ApiError'
+          description: Bad Request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
           description: Bad Request
       security:
       - bearerauth: []
@@ -985,14 +1061,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/Sequencing'
           description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          description: Not Found
         "500":
           content:
             application/json:
               schema:
-                additionalProperties:
-                  type: string
-                type: object
-          description: Internal Server Error
+                $ref: '#/components/schemas/ApiError'
+          description: Not Found
       security:
       - bearerauth: []
       summary: Get a Sequencing
@@ -1035,9 +1115,13 @@ paths:
           content:
             application/json:
               schema:
-                additionalProperties:
-                  type: string
-                type: object
+                $ref: '#/components/schemas/ApiError'
+          description: Not Found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
           description: Not Found
       security:
       - bearerauth: []
