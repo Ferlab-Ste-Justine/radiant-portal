@@ -8,7 +8,7 @@ import EvidenceTab from './components/evidence-tab';
 import FrequencyTab from './components/frequency-tab';
 import ConditionsTab from './components/conditions-tab';
 import TranscriptsTab from './components/transcripts/transcripts-tab';
-import CasesTab from './components/cases-tab';
+import CasesTab from './components/cases/cases-tab';
 import { VariantEntityTabs } from './types';
 import { variantsApi } from '@/utils/api';
 import { VariantHeader } from '@/api/api';
@@ -30,7 +30,7 @@ export default function App() {
   const { t } = useI18n();
   const location = useLocation();
   const params = useParams<{ locusId: string }>();
-  const [activeTab, setActiveTab] = useState<VariantEntityTabs>(VariantEntityTabs.Overview);
+  const [activeTab, setActiveTab] = useState<VariantEntityTabs>();
 
   const { data, isLoading } = useSWR<VariantHeader, any, VariantHeaderInput>(
     {
@@ -50,6 +50,8 @@ export default function App() {
       if (Object.values(VariantEntityTabs).includes(tab)) {
         setActiveTab(tab);
       }
+    } else {
+      setActiveTab(VariantEntityTabs.Overview);
     }
   }, [location]);
 
@@ -57,6 +59,11 @@ export default function App() {
     window.history.pushState({}, '', `#${value}`);
     setActiveTab(value);
   }, []);
+
+  // To avoid hydration mismatch with hash in ssr
+  if (!activeTab) {
+    return null;
+  }
 
   return (
     <main className="bg-muted/40 h-screen overflow-auto">
